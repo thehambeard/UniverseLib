@@ -106,7 +106,7 @@ namespace UniverseLib
                     try
                     {
                         // load and resolve the assembly's types.
-                        Assembly asm = Assembly.LoadFile(dllPath);
+                        Assembly asm = Assembly.LoadFrom(dllPath);
                         asm.GetTypes();
                     }
                     catch { }
@@ -204,7 +204,7 @@ namespace UniverseLib
             => theString;
 
         /// <summary>
-        /// Used by UnityExplorer's Singleton search. Checks all <paramref name="possibleNames"/> as field members (and properties in IL2CPP) for instances of the <paramref name="type"/>, 
+        /// Used by UnityExplorer's Singleton search. Checks all <paramref name="possibleNames"/> as field members (and properties in IL2CPP) for instances of the <paramref name="type"/>,
         /// and populates the <paramref name="instances"/> list with non-null values.
         /// </summary>
         public static void FindSingleton(string[] possibleNames, Type type, BindingFlags flags, List<object> instances)
@@ -336,7 +336,7 @@ namespace UniverseLib
             }
         }
 
-        static IEnumerator GetImplementationsAsync(Type baseType, HashSet<Type> set, bool allowAbstract, bool allowGeneric, bool allowEnum, 
+        static IEnumerator GetImplementationsAsync(Type baseType, HashSet<Type> set, bool allowAbstract, bool allowGeneric, bool allowEnum,
             IEnumerator<Type> enumerator)
         {
             Stopwatch sw = new();
@@ -398,7 +398,7 @@ namespace UniverseLib
 
         // Temp fix for IL2CPP until interface support improves
 
-        // IsEnumerable 
+        // IsEnumerable
 
         /// <summary>
         /// Returns true if the provided type is an IEnumerable, including Il2Cpp IEnumerables.

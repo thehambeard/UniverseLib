@@ -89,7 +89,7 @@ namespace UniverseLib
                 if (obj is Il2CppObjectBase cppBase)
                 {
                     // Don't need to cast ArrayBase
-                    if (type.BaseType.IsGenericType 
+                    if (type.BaseType.IsGenericType
                         && type.BaseType.GetGenericTypeDefinition() == typeof(Il2CppArrayBase<>))
                         return type;
 
@@ -208,15 +208,15 @@ namespace UniverseLib
                 // from il2cpp primitive to system primitive
                 if (IsIl2CppPrimitive(fromType) && toType.IsPrimitive)
                     return MakeMonoPrimitive(obj);
-                
+
                 // ...to il2cpp primitive
                 if (IsIl2CppPrimitive(toType))
                     return MakeIl2CppPrimitive(toType, obj);
-                
+
                 // ...to il2cpp object
                 if (typeof(Il2CppSystem.Object).IsAssignableFrom(toType))
                     return BoxIl2CppObject(obj).TryCast(toType);
-                
+
                 // else just return the object, no special casting should be required
                 return obj;
             }
@@ -429,7 +429,7 @@ namespace UniverseLib
         {
             if (obj is string || obj is Il2CppSystem.String)
                 return true;
-        
+
             if (obj is Il2CppSystem.Object cppObj)
             {
                 Il2CppSystem.Type type = cppObj.GetIl2CppType();
@@ -633,7 +633,7 @@ namespace UniverseLib
             try
             {
                 //Universe.Log($"Loading assembly '{Path.GetFileName(fullPath)}'");
-                Assembly.LoadFile(fullPath);
+                Assembly.LoadFrom(fullPath);
                 return true;
             }
             catch
@@ -789,7 +789,7 @@ namespace UniverseLib
                 Il2CppEnumerator valuesEnumerator = new(values, values.GetActualType());
 
                 dictEnumerator = new Il2CppDictionary(keysEnumerator, valuesEnumerator);
-                
+
                 return true;
             }
             catch (Exception ex)
