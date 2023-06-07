@@ -10,10 +10,14 @@ using UniverseLib.Config;
 using UniverseLib.Input;
 using UniverseLib.Runtime;
 using UniverseLib.UI;
-
-#if IL2CPP
+#if INTEROP
 using Il2CppInterop.Runtime;
 using IL2CPPUtils = Il2CppInterop.Common.Il2CppInteropUtils;
+#endif
+#if UNHOLLOWER
+using UnhollowerBaseLib;
+using UnhollowerRuntimeLib;
+using IL2CPPUtils = UnhollowerBaseLib.UnhollowerUtils;
 #endif
 
 namespace UniverseLib
@@ -28,9 +32,9 @@ namespace UniverseLib
         }
 
         public const string NAME = "UniverseLib";
-        public const string VERSION = "2.0.0";
-        public const string AUTHOR = "rainbowblood666";
-        public const string GUID = "rainbowblood.universelib";
+        public const string VERSION = "1.5.1";
+        public const string AUTHOR = "Sinai";
+        public const string GUID = "com.sinai.universelib";
 
         /// <summary>The current runtime context (Mono or IL2CPP).</summary>
         public static RuntimeContext Context { get; } =
@@ -194,7 +198,7 @@ namespace UniverseLib
                     return false;
                 }
 
-#if IL2CPP
+#if CPP
                 // if this is an IL2CPP type, ensure method wasn't stripped.
                 if (Il2CppType.From(type, false) != null
                     && IL2CPPUtils.GetIl2CppMethodInfoPointerFieldForGeneratedMethod(target) == null)
