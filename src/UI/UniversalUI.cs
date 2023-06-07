@@ -130,8 +130,8 @@ namespace UniverseLib.UI
             // Prevent click-through
             if (EventSys.IsPointerOverGameObject())
             {
-                if (InputManager.MouseScrollDelta.y != 0 
-                    || InputManager.GetMouseButtonUp(0) 
+                if (InputManager.MouseScrollDelta.y != 0
+                    || InputManager.GetMouseButtonUp(0)
                     || InputManager.GetMouseButtonUp(1))
                 {
                     InputManager.ResetInputAxes();
@@ -207,10 +207,13 @@ namespace UniverseLib.UI
             catch
             {
                 Universe.LogWarning($"Exception parsing Unity version, falling back to old AssetBundle load method...");
-                UIBundle = LoadBundle("modern") 
-                    ?? LoadBundle("legacy.5.6")
-                    ?? LoadBundle("legacy.5.3.4")
-                    ?? LoadBundle("legacy");
+                UIBundle = LoadBundle("modern");
+                if (UIBundle)
+                    UIBundle = LoadBundle("legacy.5.6");
+                if (UIBundle)
+                    UIBundle = LoadBundle("legacy.5.3.4");
+                if (UIBundle)
+                    UIBundle = LoadBundle("legacy");
             }
 
             if (UIBundle == null)
@@ -234,7 +237,8 @@ namespace UniverseLib.UI
             BackupShader.hideFlags = HideFlags.HideAndDontSave;
             UnityEngine.Object.DontDestroyOnLoad(BackupShader);
             // Fix for games which don't ship with 'UI/Default' shader.
-            if (Graphic.defaultGraphicMaterial.shader?.name != "UI/Default")
+            if (Graphic.defaultGraphicMaterial.shader != null &&
+                Graphic.defaultGraphicMaterial.shader.name != "UI/Default")
             {
                 Universe.Log("This game does not ship with the 'UI/Default' shader, using manual Default Shader...");
                 Graphic.defaultGraphicMaterial.shader = BackupShader;
@@ -268,9 +272,9 @@ namespace UniverseLib.UI
         static void SetupAssetBundlePatches()
         {
             Universe.Patch(
-                ReflectionUtility.GetTypeByName("UnityEngine.AssetBundle"), 
-                "UnloadAllAssetBundles", 
-                MethodType.Normal, 
+                ReflectionUtility.GetTypeByName("UnityEngine.AssetBundle"),
+                "UnloadAllAssetBundles",
+                MethodType.Normal,
                 prefix: AccessTools.Method(typeof(UniversalUI), nameof(Prefix_UnloadAllAssetBundles)));
         }
 
