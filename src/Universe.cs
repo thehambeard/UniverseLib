@@ -32,8 +32,8 @@ namespace UniverseLib
         }
 
         public const string NAME = "UniverseLib";
-        public const string VERSION = "1.5.1";
-        public const string AUTHOR = "Sinai";
+        public const string VERSION = "1.5.2";
+        public const string AUTHOR = "Sinai, yukieiji";
         public const string GUID = "com.sinai.universelib";
 
         /// <summary>The current runtime context (Mono or IL2CPP).</summary>
@@ -58,7 +58,7 @@ namespace UniverseLib
         /// Initialize UniverseLib with default settings, if you don't require any finer control over the startup process.
         /// </summary>
         /// <param name="onInitialized">Invoked after the <c>startupDelay</c>and after UniverseLib has finished initializing.</param>
-        /// <param name="logHandler">Should be used for printing UniverseLib's own internal logs. Your listener will only be used if no listener has 
+        /// <param name="logHandler">Should be used for printing UniverseLib's own internal logs. Your listener will only be used if no listener has
         /// yet been provided to handle it. It is not required to implement this but it may be useful to diagnose internal errors.</param>
         public static void Init(Action onInitialized = null, Action<string, LogType> logHandler = null)
             => Init(1f, onInitialized, logHandler, default);
@@ -69,7 +69,7 @@ namespace UniverseLib
         /// <param name="startupDelay">Will be used only if it is the highest value supplied to this method compared to other assemblies.
         /// If another assembly calls this Init method with a higher startupDelay, their value will be used instead.</param>
         /// <param name="onInitialized">Invoked after the <paramref name="startupDelay"/> and after UniverseLib has finished initializing.</param>
-        /// <param name="logHandler">Should be used for printing UniverseLib's own internal logs. Your listener will only be used if no listener has 
+        /// <param name="logHandler">Should be used for printing UniverseLib's own internal logs. Your listener will only be used if no listener has
         /// yet been provided to handle it. It is not required to implement this but it may be useful to diagnose internal errors.</param>
         /// <param name="config">Can be used to set certain values of UniverseLib's configuration. Null config values will be ignored.</param>
         public static void Init(float startupDelay, Action onInitialized, Action<string, LogType> logHandler, UniverseLibConfig config)
