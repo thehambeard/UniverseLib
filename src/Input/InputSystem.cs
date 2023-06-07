@@ -8,7 +8,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UniverseLib.UI;
 using UniverseLib.Utility;
+#if IL2CPP
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+#endif
 
 namespace UniverseLib.Input
 {
@@ -188,7 +190,7 @@ namespace UniverseLib.Input
             0 => LeftMouseButton,
             1 => RightMouseButton,
             2 => MiddleMouseButton,
-            3 => BackMouseButton, 
+            3 => BackMouseButton,
             4 => ForwardMouseButton,
             _ => throw new NotImplementedException()
         };
@@ -300,7 +302,7 @@ namespace UniverseLib.Input
                 object actual = KeyCodeToActualKey(key);
                 return (bool)p_btnWasPressed.GetValue(actual, null);
             }
-            catch 
+            catch
             {
                 return false;
             }
