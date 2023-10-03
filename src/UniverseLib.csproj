@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Release_IL2CPP</Configuration>
+        <Configuration Condition=" '$(Configuration)' == '' ">Release_IL2CPP_Unhollower</Configuration>
         <OutputType>Library</OutputType>
         <LangVersion>10.0</LangVersion>
         <DefineConstants>
