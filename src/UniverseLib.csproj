@@ -14,6 +14,8 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
         <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+        <!-- MSBuildの.NET8対応に伴って勝手にバージョンにハッシュ値入れられてBepInExのロード不具合が出たため、明示的に無効化しておく -->
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
         <Configurations>Release_Mono;Release_IL2CPP_Unhollower;Release_IL2CPP_Interop_BIE;Release_IL2CPP_Interop_ML</Configurations>
     </PropertyGroup>
     <!-- Configurations -->
