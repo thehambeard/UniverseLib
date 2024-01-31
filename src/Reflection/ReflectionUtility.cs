@@ -116,18 +116,27 @@ namespace UniverseLib
         {
             foreach (Type type in asm.TryGetTypes())
             {
-                // Cache namespace if there is one
-                if (!string.IsNullOrEmpty(type.Namespace) && !uniqueNamespaces.Contains(type.Namespace))
+                try
                 {
-                    uniqueNamespaces.Add(type.Namespace);
-                    int i = 0;
-                    while (i < AllNamespaces.Count)
+                    string namespaceStr = type.Namespace;
+
+                    // Cache namespace if there is one
+                    if (!string.IsNullOrEmpty(namespaceStr) && !uniqueNamespaces.Contains(namespaceStr))
                     {
-                        if (type.Namespace.CompareTo(AllNamespaces[i]) < 0)
-                            break;
-                        i++;
+                        uniqueNamespaces.Add(namespaceStr);
+                        int i = 0;
+                        while (i < AllNamespaces.Count)
+                        {
+                            if (namespaceStr.CompareTo(AllNamespaces[i]) < 0)
+                                break;
+                            i++;
+                        }
+                        AllNamespaces.Insert(i, namespaceStr);
                     }
-                    AllNamespaces.Insert(i, type.Namespace);
+                }
+                catch (Exception e)
+                {
+                    Universe.Log($"Can't cache type named {type.Name} Error: {e}");
                 }
 
                 // Cache the type. Overwrite type if one exists with the full name
