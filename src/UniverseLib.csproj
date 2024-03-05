@@ -2,11 +2,9 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Release_IL2CPP_Unhollower</Configuration>
         <OutputType>Library</OutputType>
-        <LangVersion>10.0</LangVersion>
-        <DefineConstants>
-        </DefineConstants>
+        <LangVersion>latest</LangVersion>
         <DebugSymbols>false</DebugSymbols>
-        <DebugType>none</DebugType>
+        <DebugType>embedded</DebugType>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
