@@ -389,7 +389,7 @@ namespace UniverseLib
 
         // Helpers for Il2Cpp primitive <-> Mono
 
-        internal static readonly Dictionary<string, Type> il2cppPrimitivesToMono = new()
+        internal static readonly IReadOnlyDictionary<string, Type> il2cppPrimitivesToMono = new Dictionary<string, Type>()
         {
             { "Il2CppSystem.Boolean", typeof(bool) },
             { "Il2CppSystem.Byte",    typeof(byte) },
@@ -681,7 +681,9 @@ namespace UniverseLib
             try
             {
                 if (cppIEnumerablePointer == IntPtr.Zero)
+                {
                     Il2CppTypeNotNull(typeof(Il2CppSystem.Collections.IEnumerable), out cppIEnumerablePointer);
+                }
 
                 if (cppIEnumerablePointer != IntPtr.Zero
                     && Il2CppTypeNotNull(type, out IntPtr assignFromPtr)
@@ -690,7 +692,10 @@ namespace UniverseLib
                     return true;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Universe.LogWarning($"IEnumerable of type [{type.FullName}] failed to check: {ex}");
+            }
 
             return false;
         }
@@ -746,19 +751,27 @@ namespace UniverseLib
         protected override bool Internal_IsDictionary(Type type)
         {
             if (base.Internal_IsDictionary(type))
+            {
                 return true;
-
+            }
             try
             {
-                if (cppIDictionaryPointer == IntPtr.Zero)
-                    if (!Il2CppTypeNotNull(typeof(Il2CppSystem.Collections.IDictionary), out cppIDictionaryPointer))
-                        return false;
+                if (cppIDictionaryPointer == IntPtr.Zero &&
+                    !Il2CppTypeNotNull(typeof(Il2CppSystem.Collections.IDictionary), out cppIDictionaryPointer))
+                {
+                    return false;
+                }
 
                 if (Il2CppTypeNotNull(type, out IntPtr classPtr)
                     && IL2CPP.il2cpp_class_is_assignable_from(cppIDictionaryPointer, classPtr))
+                {
                     return true;
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Universe.LogWarning($"IDictionary of type [{type.FullName}] failed to check : {ex}");
+            }
 
             return false;
         }
@@ -815,7 +828,7 @@ namespace UniverseLib
             }
             catch (Exception ex)
             {
-                Universe.Log($"IDictionary failed to enumerate: {ex}");
+                Universe.LogWarning($"IDictionary failed to enumerate: {ex}");
                 dictEnumerator = null;
                 return false;
             }
