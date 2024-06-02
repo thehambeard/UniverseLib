@@ -138,7 +138,7 @@ public class ReflectionUtility
             }
             catch (Exception e)
             {
-                Universe.LogWarning($"Can't cache type named {type.Name} Error: {e}");
+                Universe.LogWarning($"THIS WARNING IS NOT BUG!!!! DON'T REPORT THIS!!!!!\n Can't cache type named {type.Name} Error: {e}");
             }
 
             // Cache the type. Overwrite type if one exists with the full name
