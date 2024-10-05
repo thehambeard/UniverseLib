@@ -22,7 +22,7 @@ using IL2CPPUtils = UnhollowerBaseLib.UnhollowerUtils;
 
 namespace UniverseLib
 {
-    public class Universe
+    public static class Universe
     {
         public enum GlobalState
         {
