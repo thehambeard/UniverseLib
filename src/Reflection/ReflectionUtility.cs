@@ -175,7 +175,11 @@ public class ReflectionUtility
         return type;
     }
 
+#if RELEASE_MONO
+    static readonly Dictionary<string, Type> shorthandToType = new Dictionary<string, Type>()
+#else
     static readonly IReadOnlyDictionary<string, Type> shorthandToType = new Dictionary<string, Type>()
+#endif
     {
         { "object", typeof(object) },
         { "string", typeof(string) },
