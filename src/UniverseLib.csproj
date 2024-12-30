@@ -5,4 +5,7 @@
   <ItemGroup>
     <PackageReference Include="UniverseLib.Analyzers" Version="1.0.4" IncludeAssets="compile" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\*" />
+  </ItemGroup>
 </Project>
