@@ -34,6 +34,7 @@ public class PanelManager
     protected internal static bool focusHandledThisFrame;
     protected internal static bool draggerHandledThisFrame;
     protected internal static bool wasAnyDragging;
+    protected internal static int targetDisplay;
 
     /// <summary>Force any current Resizing to immediately end.</summary>
     public static void ForceEndResize()
@@ -73,11 +74,25 @@ public class PanelManager
             rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 64);
 
             resizeCursorUIBase.Enabled = false;
+
+            SetResizeCursorTargetDisplay(targetDisplay);
         }
         catch (Exception e)
         {
             Universe.LogWarning("Exception creating Resize Cursor UI!\r\n" + e.ToString());
         }
+    }
+
+    public static void SetResizeCursorTargetDisplay(int display)
+    {
+        targetDisplay = display;
+
+        if (resizeCursorUIBase != null)
+            resizeCursorUIBase.Canvas.targetDisplay = targetDisplay;
+
+        Canvas canvas;
+        if (resizeCursor != null && (canvas = resizeCursor.GetComponent<Canvas>()) != null)
+            canvas.targetDisplay = targetDisplay;
     }
 
     #endregion
