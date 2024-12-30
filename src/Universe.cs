@@ -34,7 +34,7 @@ namespace UniverseLib
         public const string NAME = "UniverseLib";
         public const string VERSION = "1.5.7";
         public const string AUTHOR = "Sinai, yukieiji";
-        public const string GUID = "com.sinai.universelib";
+        public const string GUID = "UniverseLib-Owlcat";
 
         /// <summary>The current runtime context (Mono or IL2CPP).</summary>
         public static RuntimeContext Context { get; } =

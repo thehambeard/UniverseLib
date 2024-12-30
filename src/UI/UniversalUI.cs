@@ -121,6 +121,11 @@ namespace UniverseLib.UI
 
         internal static void Update()
         {
+            Debug.developerConsoleVisible = false;
+#if RT
+            Debug.developerConsoleEnabled = false;
+#endif
+
             if (!CanvasRoot || Initializing)
                 return;
 
@@ -237,8 +242,13 @@ namespace UniverseLib.UI
             BackupShader.hideFlags = HideFlags.HideAndDontSave;
             UnityEngine.Object.DontDestroyOnLoad(BackupShader);
             // Fix for games which don't ship with 'UI/Default' shader.
+#if KM
             if (Graphic.defaultGraphicMaterial.shader != null &&
                 Graphic.defaultGraphicMaterial.shader.name != "UI/Default")
+#else
+            if (Graphic.defaultGraphicMaterial.shader != null &&
+                Graphic.defaultGraphicMaterial.shader.name != "Owlcat/UI/Default")
+#endif
             {
                 Universe.Log("This game does not ship with the 'UI/Default' shader, using manual Default Shader...");
                 Graphic.defaultGraphicMaterial.shader = BackupShader;
@@ -271,11 +281,11 @@ namespace UniverseLib.UI
 
         static void SetupAssetBundlePatches()
         {
-            Universe.Patch(
-                ReflectionUtility.GetTypeByName("UnityEngine.AssetBundle"),
-                "UnloadAllAssetBundles",
-                MethodType.Normal,
-                prefix: AccessTools.Method(typeof(UniversalUI), nameof(Prefix_UnloadAllAssetBundles)));
+            //Universe.Patch(
+            //    ReflectionUtility.GetTypeByName("UnityEngine.AssetBundle"),
+            //    "UnloadAllAssetBundles",
+            //    MethodType.Normal,
+            //    prefix: AccessTools.Method(typeof(UniversalUI), nameof(Prefix_UnloadAllAssetBundles)));
         }
 
         static bool Prefix_UnloadAllAssetBundles(bool unloadAllObjects)
