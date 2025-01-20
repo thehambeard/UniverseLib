@@ -31,7 +31,7 @@ namespace UniverseLib.Runtime
         /// <summary>
         /// Helper for invoking Unity's <c>ImageConversion.EncodeToPNG</c> method.
         /// </summary>
-        public static byte[] EncodeToPNG(Texture2D tex) 
+        public static byte[] EncodeToPNG(Texture2D tex)
             => Instance.Internal_EncodeToPNG(tex);
 
         protected internal abstract byte[] Internal_EncodeToPNG(Texture2D tex);
@@ -47,7 +47,7 @@ namespace UniverseLib.Runtime
         /// </summary>
         public static Texture2D NewTexture2D(int width, int height, TextureFormat textureFormat, bool mipChain)
             => Instance.Internal_NewTexture2D(width, height, textureFormat, mipChain);
-        
+
         protected internal abstract Texture2D Internal_NewTexture2D(int width, int height);
         protected internal abstract Texture2D Internal_NewTexture2D(int width, int height, TextureFormat textureFormat, bool mipChain);
 
@@ -64,7 +64,7 @@ namespace UniverseLib.Runtime
         /// </summary>
         public static Sprite CreateSprite(Texture2D texture)
             => Instance.Internal_CreateSprite(texture);
-        
+
         protected internal abstract Sprite Internal_CreateSprite(Texture2D texture);
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace UniverseLib.Runtime
         /// </summary>
         public static void CreateSprite(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, uint extrude, Vector4 border)
             => Instance.Internal_CreateSprite(texture, rect, pivot, pixelsPerUnit, extrude, border);
-        
-        protected internal abstract Sprite Internal_CreateSprite(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit, 
+
+        protected internal abstract Sprite Internal_CreateSprite(Texture2D texture, Rect rect, Vector2 pivot, float pixelsPerUnit,
             uint extrude, Vector4 border);
 
         /// <summary>
@@ -91,6 +91,34 @@ namespace UniverseLib.Runtime
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Helper to create a readable texture from allowing to read pixel data if Texture2D is set to read disabled
+        /// </summary>
+        /// <param name="source">Orginal Texture2D</param>
+        /// <returns></returns>
+        public static Texture2D CreateReadableTexture(Texture2D source)
+        {
+            RenderTexture tempRT = RenderTexture.GetTemporary(
+                source.width,
+                source.height,
+                0,
+                RenderTextureFormat.Default,
+                RenderTextureReadWrite.Linear
+            );
+
+            Graphics.Blit(source, tempRT);
+
+            var readableTexture = TextureHelper.NewTexture2D(source.width, source.height, TextureFormat.RGBA32, false);
+            RenderTexture.active = tempRT;
+            readableTexture.ReadPixels(new Rect(0, 0, tempRT.width, tempRT.height), 0, 0);
+            readableTexture.Apply();
+
+            RenderTexture.active = null;
+            RenderTexture.ReleaseTemporary(tempRT);
+
+            return readableTexture;
         }
 
         /// <summary>
@@ -128,7 +156,16 @@ namespace UniverseLib.Runtime
             else if (source.TryCast<Cubemap>() is Cubemap cmap)
                 format = cmap.format;
 
-            Texture2D newTex = NewTexture2D((int)dimensions.width, (int)dimensions.height, format, false);
+            int width = (int)dimensions.width;
+            int height = (int)dimensions.height;
+
+            if (format == TextureFormat.DXT5 || format == TextureFormat.DXT1)
+            {
+                width = Mathf.CeilToInt(dimensions.width / 4f) * 4;
+                height = Mathf.CeilToInt(dimensions.height / 4f) * 4;
+            }
+
+            Texture2D newTex = NewTexture2D(width, height, format, false);
             newTex.filterMode = FilterMode.Point;
 
             return CopyTexture(source, newTex, dimensions, cubemapFace, dstX, dstY);
@@ -145,7 +182,7 @@ namespace UniverseLib.Runtime
         /// <param name="dstX">Optional destination starting X value.</param>
         /// <param name="dstY">Optional destination starting Y value.</param>
         /// <returns>The <paramref name="destination"/> Texture, copied from the <paramref name="source"/>.</returns>
-        public static Texture2D CopyTexture(Texture source, Texture2D destination, 
+        public static Texture2D CopyTexture(Texture source, Texture2D destination,
             Rect dimensions = default, int cubemapFace = 0, int dstX = 0, int dstY = 0)
         {
             try
@@ -173,7 +210,7 @@ namespace UniverseLib.Runtime
             }
         }
 
-        internal abstract Texture Internal_CopyTexture(Texture src, int srcElement, int srcMip, int srcX, int srcY, 
+        internal abstract Texture Internal_CopyTexture(Texture src, int srcElement, int srcMip, int srcX, int srcY,
             int srcWidth, int srcHeight, Texture dst, int dstElement, int dstMip, int dstX, int dstY);
 
         /// <summary>
@@ -279,7 +316,7 @@ namespace UniverseLib.Runtime
             => Copy(origTex, dimensions);
 
         [Obsolete("Use TextureHelper.CopyTexture() instead. This method will be removed in a future version of UniverseLib.")]
-        public static Texture2D Copy(Texture2D orig) 
+        public static Texture2D Copy(Texture2D orig)
             => Copy(orig, new(0, 0, orig.width, orig.height));
 
         [Obsolete("Use TextureHelper.CopyTexture() instead. This method will be removed in a future version of UniverseLib.")]

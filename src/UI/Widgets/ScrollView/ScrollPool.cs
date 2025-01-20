@@ -148,6 +148,12 @@ namespace UniverseLib.UI.Widgets.ScrollView
             RefreshCells(setCellData, true);
         }
 
+        public void JumpToBottom()
+        {
+            CheckDataSourceCountChange();
+            JumpToIndex_Internal(HeightCache.Count - 1, null);
+        }
+
         /// <summary>
         /// Jump to the cell at the provided index, and invoke onJumped after completion.
         /// </summary>
@@ -158,6 +164,11 @@ namespace UniverseLib.UI.Widgets.ScrollView
             if (HeightCache.Count <= index)
                 throw new IndexOutOfRangeException($"Requested jump index {index} is out of bounds. Data count: {HeightCache.Count}");
 
+            JumpToIndex_Internal(index, onJumped);
+        }
+
+        private void JumpToIndex_Internal(int index, Action<T> onJumped)
+        {
             // Slide to the normalized position of the index
             DataViewInfo view = HeightCache[index];
 
